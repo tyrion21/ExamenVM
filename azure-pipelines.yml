@@ -19,7 +19,7 @@ stages:
       runOnce:
         deploy:
           steps:
-          - scripts:
+          - script:
               echo "Instalando Apache y configurando la página de prueba..."
               sudo apt-get update
               sudo apt-get install -y apache2
