@@ -11,7 +11,7 @@ stages:
   - deployment: InstallApacheAndConfigure
     displayName: "Instalar Apache y Configurar Página"
 
-    enviroment:
+    environment:
       name: "examen-VM"
       resourceType: VirtualMachine
 
