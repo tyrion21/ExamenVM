@@ -21,8 +21,8 @@ stages:
             steps:
             - scripts:
               echo "Instalando Apache y configurando la página de prueba..."
-              sudo apt update
-              sudo apt install -y apache2
+              sudo apt-get update
+              sudo apt-get install -y apache2
               echo "automatizando el despliegue de maquina virtual desde azure devops"
               sudo tee /var/www/html/index.html
               sudo systemctl restart apache2
