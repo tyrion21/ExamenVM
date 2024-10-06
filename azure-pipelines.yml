@@ -39,7 +39,6 @@ jobs:
   displayName: Deploy to VM
   environment: 
    name: "examen-VM"
-   resourceName: examenRecurso
    resourceType: virtualMachine
   strategy:
      runOnce:
