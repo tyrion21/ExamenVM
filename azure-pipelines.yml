@@ -1,30 +1,55 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
+# # Starter pipeline
+# # Start with a minimal pipeline that you can customize to build and deploy your code.
+# # Add steps that build, run tests, deploy, and more:
+# # https://aka.ms/yaml
 
-trigger:
+# trigger:
+# - main
+# stages:
+# - stage: DeployToVM
+#   jobs:
+#   - deployment: InstallApacheAndConfigure
+#     displayName: "Instalar Apache y Configurar Página"
+
+#     environment:
+#       name: "examen-VM"
+#       resourceType: VirtualMachine
+
+#     strategy:
+#       runOnce:
+#         deploy:
+#           steps:
+#           - script:
+#               echo "Instalando Apache y configurando la página de prueba..."
+#               sudo apt update
+#               sudo apt install -y apache2
+#               echo "automatizando el despliegue de maquina virtual desde azure devops"
+#               sudo tee /var/www/html/index.html
+#               sudo systemctl restart apache2
+#               echo "Apache instalado y página de bienvenida configurada."
+#             displayName: "Instalar apache y configurar mensaje"
+trigger: 
 - main
-stages:
-- stage: DeployToVM
-  jobs:
-  - deployment: InstallApacheAndConfigure
-    displayName: "Instalar Apache y Configurar Página"
 
-    environment:
-      name: "examen-VM"
-      resourceType: VirtualMachine
+pool: 
+   vmImage: ubuntu-latest
 
-    strategy:
-      runOnce:
-        deploy:
+jobs:
+- deployment: VMDeploy
+  displayName: Deploy to VM
+  environment: 
+   name: "examen-VM"
+   resourceName: examenRecurso
+   resourceType: virtualMachine
+  strategy:
+     runOnce:
+        deploy:   
           steps:
-          - script:
-              echo "Instalando Apache y configurando la página de prueba..."
-              sudo apt update
-              sudo apt install -y apache2
-              echo "automatizando el despliegue de maquina virtual desde azure devops"
-              sudo tee /var/www/html/index.html
-              sudo systemctl restart apache2
-              echo "Apache instalado y página de bienvenida configurada."
-            displayName: "Instalar apache y configurar mensaje"
+            - script: |
+                echo "Iniciando instalación de Apache..."
+                sudo apt-get update
+                sudo apt-get install -y apache2
+                echo "<h1>Texto de comprobacion</h1>" | sudo tee /var/www/html/index.html
+                sudo systemctl restart apache2
+                echo "Instalación y configuración completadas."
+              displayName: "Instalar Apache y Configurar Mensaje" 
