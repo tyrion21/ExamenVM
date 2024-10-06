@@ -5,15 +5,25 @@
 
 trigger:
 - main
+stages:
+- stage: DeployToVM
+  jobs:
+  - deployment: InstallApacheAndConfigure
+    displayName: "Instalar Apache y Configurar Página"
 
-pool:
-  vmImage: ubuntu-latest
+    enviroment:
+      name: "examen-VM"
+      resourceType: VirtualMachine
 
-steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
-
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+            - scripts:
+              echo: "Instalando Apache y configurando la página de prueba..."
+              sudo apt-get update
+              sudo apt install -y apache2
+              echo 'automatizando el despliegue de maquina virtual desde azure devops' | sudo tee /var/www/html/index.html
+              sudo systemctl restart apache2
+              echo "Apache instalado y página de bienvenida configurada."
+            displayName: "Instalar apache y configurar mensaje"
